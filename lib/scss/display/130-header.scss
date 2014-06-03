@@ -1,0 +1,41 @@
+// ==============================================================================
+// #Site Header
+// ==============================================================================
+.site-header {
+	padding: $gutter 0;
+
+	@include at-query($min, $large) {
+		.grid {
+			display: table;
+
+			& > .grid-item {
+				float: none;
+				display: table-cell;
+				vertical-align: middle;
+			}
+		}
+	}
+}
+
+.header-logo {
+	text-align: center;
+	margin: 0 auto $gutter/2;
+
+	@include at-query($min, $large) {
+		margin-bottom: 0;
+	}
+
+	a,
+	a:hover,
+	a:focus {
+		text-decoration: none;
+	}
+
+	a, img {
+		display: block;
+	}
+
+	img {
+		margin: 0 auto;
+	}
+}

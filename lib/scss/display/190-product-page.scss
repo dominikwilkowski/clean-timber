@@ -1,0 +1,28 @@
+// ==============================================================================
+// #Product Page
+// ==============================================================================
+.product-price {
+	font-weight: bold;
+}
+
+.product-variants {
+	display: none;
+
+	.no-js & {
+		display: block;
+	}
+}
+
+.product-photo-container {
+	margin-bottom: $gutter;
+}
+
+.product-photo-container,
+.product-photo-thumbs {
+	a, img {
+		display: block;
+	}
+	li {
+		margin-bottom: $gutter;
+	}
+}

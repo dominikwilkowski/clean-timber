@@ -1,0 +1,12 @@
+// ==============================================================================
+// #Cart Page
+// ==============================================================================
+.cart-row {
+	margin-bottom: $gutter;
+	padding-bottom: $gutter;
+	border-bottom: 1px solid $borderColor;
+
+	#ajaxifyDrawer & {
+		border-bottom-color: #444;
+	}
+}

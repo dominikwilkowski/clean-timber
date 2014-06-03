@@ -1,0 +1,27 @@
+// ==============================================================================
+// #Product Grid and List Views
+// ==============================================================================
+.sold-out {
+
+}
+
+.on-sale {
+
+}
+
+.product-list-thumb {
+	display: block;
+	float: left;
+	margin-right: $gutter;
+	margin-bottom: $gutter;
+}
+
+.product-grid-image {
+	display: block;
+	margin: 0 auto;
+
+	img {
+		display: block;
+		margin: 0 auto;
+	}
+}

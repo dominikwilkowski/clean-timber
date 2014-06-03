@@ -1,0 +1,17 @@
+// ==============================================================================
+// #Helper Classes
+// ==============================================================================
+.left { float: left; }
+.right { float: right; }
+.text-center { text-align: center; }
+.text-right { text-align: right; }
+.hidden { display: none; }
+
+.display-table {
+	display: table;
+}
+
+.display-table-cell {
+	display: table-cell;
+	vertical-align: middle;
+}

@@ -1,0 +1,181 @@
+<!doctype html>
+<!--[if lt IE 7]><html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if IE 7]><html class="no-js lt-ie9 lt-ie8" lang="en"> <![endif]-->
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en"> <![endif]-->
+<!--[if IE 9 ]><html class="ie9 no-js"> <![endif]-->
+<!--[if (gt IE 9)|!(IE)]><!--> <html class="no-js"> <!--<![endif]-->
+<head>
+
+	<!-- Basic page needs ================================================== -->
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+
+	<!-- Title and description ================================================== -->
+	<title>
+	{{ page_title }}{% if current_tags %} &ndash; tagged "{{ current_tags | join: ', ' }}"{% endif %}{% if current_page != 1 %} &ndash; Page {{ current_page }}{% endif %}{% unless page_title contains shop.name %} &ndash; {{ shop.name }}{% endunless %}
+	</title>
+
+	{% if page_description %}
+	<meta name="description" content="{{ page_description | escape }}">
+	{% endif %}
+
+	<!-- Product meta ================================================== -->
+	{% include 'fb-open-graph-tags' %}
+	{% include 'twitter-card' %}
+
+	<!-- Helpers ================================================== -->
+	<link rel="canonical" href="{{ canonical_url }}">
+	<meta name="viewport" content="width=device-width,initial-scale=1">
+
+	<!-- CSS ================================================== -->
+	{{ 'timber.scss.css' | asset_url | stylesheet_tag }}
+
+	{% if settings.ajax_cart %}
+	<!-- Ajaxify Cart Plugin ================================================== -->
+	{{ 'ajaxify.scss.css' | asset_url | stylesheet_tag }}
+	{% endif %}
+
+	<!-- Header hook for plugins ================================================== -->
+	{{ content_for_header }}
+
+	<!--[if lt IE 9]>
+	{{ '//html5shiv.googlecode.com/svn/trunk/html5.js' | script_tag }}
+	<![endif]-->
+
+	{% comment %}
+		If you store has customers disabled, you can remove the following JS file
+	{% endcomment %}
+	{% if template contains 'customers' %}
+		{{ 'shopify_common.js' | shopify_asset_url | script_tag }}
+		{{ 'customer_area.js'  | shopify_asset_url | script_tag }}
+	{% endif %}
+
+	{% comment %}
+		Theme dependent JS is loaded at the very bottom of this file for performance reasons.
+		However, jQuery is included here so that it can be used inside the templates, e.g. in product.liquid.
+	{% endcomment %}
+	{{ '//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js' | script_tag }}
+
+</head>
+
+{% comment %}
+	Add the page template as a class for easy page or template specific styling.
+{% endcomment %}
+<body id="{{ page_title | handle }}" class="{% if customer %}customer-logged-in {% endif %}template-{{ template | replace: '.', ' ' | truncatewords: 1, '' | handle }}" >
+
+	<header class="site-header" role="banner">
+		<div class="wrapper">
+
+			<div class="grid">
+				<div class="grid-item large--one-half">
+					{% comment %}
+						Use the uploaded logo from theme settings if enabled
+					{% endcomment %}
+					<h1 class="header-logo large--left">
+						{% if settings.use_logo %}
+							<a href="/">
+								{{ 'logo.png' | asset_url | img_tag: shop.name }}
+							</a>
+						{% else %}
+							<a href="/">{{ shop.name }}</a>
+						{% endif %}
+					</h1>
+				</div>
+				<div class="grid-item large--one-half text-center large--text-right">
+					{% comment %}
+						You cart/checkout link should at least show the number of items in it.
+						Below shows the item count followed by item(s) and the total cart price.
+
+						Ajaxify Cart Notes:
+							- #cartToggle toggles cart visibility (drawer or modal)
+							- #cartCount updates the total number of items in the cart
+							- #cartCost updates the total cost of the cart
+							- Documentation:  http://shopify.com/timber#ajax-cart
+					{% endcomment %}
+					<a href="/cart" id="cartToggle">
+						Cart (<span id="cartCount">{{ cart.item_count }}</span> {{ cart.item_count | pluralize: 'item', 'items' }} <span id="cartCost">{{ cart.total_price | money }}</span>)
+					</a>
+
+					{% comment %}
+						If customer accounts are enabled, provide login and create account links
+					{% endcomment %}
+					{% if shop.customer_accounts_enabled %}
+					<p>
+						{% if customer %}
+							Logged in as <a href="/account">{{ customer.first_name }}</a> &middot; {{ 'Log out' | customer_logout_link }}
+						{% else %}
+							{{ 'Log in' | customer_login_link }}
+							{% if shop.customer_accounts_optional %}
+							or {{ 'Create an account' | customer_register_link }}
+							{% endif %}
+						{% endif %}
+					</p>
+					{% endif %}
+				</div>
+			</div>
+
+		</div>
+	</header>
+
+	<nav class="nav-bar" role="navigation">
+		<div class="wrapper">
+			<div class="grid">
+				<div class="grid-item large--two-thirds">
+					{% include 'site-nav' %}
+				</div>
+				<div class="grid-item large--one-third">
+					<div class="nav-search">
+						{% include 'search-bar' %}
+					</div>
+				</div>
+			</div>
+		</div>
+	</nav>
+
+	<main class="wrapper main-content" role="main">
+
+		{{ content_for_layout }}
+
+	</main>
+
+	{% include 'footer' %}
+
+	{% comment %}
+		An (almost) empty JS file for you to place your code
+	{% endcomment %}
+	{{ 'shop.js' | asset_url | script_tag }}
+
+	{% comment %}
+		Ajaxify your cart with this plugin. Adding a product will reveal a drawer, modal, or confirmation button.
+		Enabled by default in theme settings.
+
+		Ajaxify Cart Documentation:
+			- http://shopify.com/timber#ajax-cart
+	{% endcomment %}
+	{% if settings.ajax_cart %}
+	{% comment %}{{ 'handlebars.min.js' | asset_url | script_tag }}{% endcomment %}
+	{% include 'ajax-cart-template' %}
+	{{ 'ajaxify.js' | asset_url | script_tag }}
+	<script>
+	jQuery(function($) {
+		ajaxifyShopify.init({
+			method: '{{ settings.ajax_cart_method }}', // Method options are drawer, modal, and flip. Default is drawer.
+			wrapperClass: 'wrapper', // The class that defines your site width. Default is null.
+			formSelector: '#addToCartForm', // Default is form[action^="/cart/add"].
+			addToCartSelector: '#addToCart', // Default is input[type="submit"] within 'formSelector'.
+			cartCountSelector: '#cartCount', // Update number of items in the cart when a product is added. Default is null.
+			cartCostSelector: '#cartCost', // Update the total cart cost when a product is added. Default is null.
+			toggleCartButton: '#cartToggle', // To toggle drawer/modal cart, include the selector here. Default is null and will take you to /cart page.
+			useCartTemplate: true, // True to use cart.liquid markup. False to use handlebars.js for template. Default is true.
+			btnClass: 'btn', // Your main button class for styling purposes if useCartTemplate is set to false. Default is null.
+			moneyFormat: {{ shop.money_format | json }}, // Your shop money format, defined in liquid.
+			disableAjaxCart: false, // If for some reason you want to disable the cart, set to true. Default is false.
+			enableQtySelectors: true, // Enable the quantity selectors on your templates, even if disableAjaxCart is false. Default is true.
+			prependDrawerTo: 'body' // The element selector where the cart is prepended. This is used for the drawer and flip methods. Default is 'body'.
+		});
+	});
+	</script>
+	{% endif %}
+
+</body>
+</html>

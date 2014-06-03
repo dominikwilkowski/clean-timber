@@ -1,0 +1,23 @@
+// ==============================================================================
+// #Basic Styles
+// ==============================================================================
+html {
+	background-color: $colorFooterBg;
+}
+
+body {
+	background-color: #fff;
+}
+
+.wrapper {
+	@include clearfix();
+	max-width: $siteWidth;
+	margin: 0 auto;
+	padding: 0 $gutter;
+}
+
+.main-content {
+	display: block;
+	padding-top: $gutter*2;
+	padding-bottom: $gutter*2;
+}

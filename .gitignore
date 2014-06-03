@@ -1,0 +1,11 @@
+.DS_Store
+*.sublime-project
+*.sublime-workspace
+codekit-config.json
+*.codekit
+node_modules
+.tmp
+.sass-cache
+.idea
+theme/assets/shop.js.liquid
+theme/assets/style.scss.liquid

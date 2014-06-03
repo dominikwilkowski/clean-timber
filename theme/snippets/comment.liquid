@@ -1,0 +1,23 @@
+{% comment %}
+
+	This snippet generates the structure of a comment.
+	It is used to show not only recent comments, but also comments that were
+	just published but not yet approved.
+
+	More information:
+	 - http://docs.shopify.com/themes/liquid-variables/comment
+
+{% endcomment %}
+
+<div class="comment-content">
+	{{ comment.content }}
+</div>
+
+<p class="comment-author text-light">
+	<strong>{{ comment.author }}</strong> on
+	<strong>
+		<time datetime="{{ comment.created_at | date: '%Y-%m-%d' }}">
+			{{ comment.created_at | date: '%b %d, %Y' }}
+		</time>
+	</strong>
+</p>
