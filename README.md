@@ -1,7 +1,7 @@
 clean-timber
 ============
 
-This is a clean [shopify](http://www.shopify.com/) theme based on [timber v1.2.1](https://github.com/Shopify/Timber) with a small grunt framework that handles all assets.
+This is a clean [shopify](http://www.shopify.com/) theme based on [timber v1.2.1](https://github.com/Shopify/Timber) with a small [grunt file](https://github.com/the-working-party/shopify-grunt-tools) that handles all assets.
 
 ## Getting Started
 This plugin requires Grunt `~0.4.0`
